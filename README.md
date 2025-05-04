@@ -20,3 +20,15 @@ CouchCritics is a simple web-based movie review platform built with Flask and SQ
 
 ## Project Structure
 
+project_root/
+│
+├── data/ # Source CSV file (for initial import)
+├── src/
+│ ├── app.py # Flask entry point
+│ ├── db/
+│ │ ├── movies.db # SQLite database
+│ │ └── init_db.py # Script to create and populate database
+│ ├── modules/ # Business logic (auth, movie, review)
+│ ├── templates/ # HTML templates
+│ └── static/ # Optional static assets
+└── requirements.txt # Python dependencies
