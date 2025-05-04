@@ -3,7 +3,6 @@
 import sqlite3
 import os
 
-# Veritabanı dosyasının doğru yoldan alınması
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "db", "movies.db")
 
 def register_user(username, password):

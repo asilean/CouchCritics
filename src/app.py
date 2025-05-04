@@ -6,7 +6,7 @@ from modules.review import get_reviews_for_movie, add_review
 from modules.auth import register_user, login_user
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # üretimde .env dosyasına alınmalı
+app.secret_key = "supersecretkey"  # I will change this to a random secret key.
 
 # -------------- ROUTES --------------------
 
@@ -18,7 +18,7 @@ def index():
     if query:
         all_movies = [m for m in all_movies if query in m["Series_Title"].lower()]
 
-    # Sayfalama
+    # Pagination
     page = int(request.args.get("page", 1))
     per_page = 9
     total = len(all_movies)

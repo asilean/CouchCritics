@@ -1,12 +1,12 @@
 import sqlite3
 import csv
 
-# Veritabanını oluştur ve bağlan
+# creating database
 conn = sqlite3.connect("movies.db")
 c = conn.cursor()
 
 
-# Movies tablosunu oluştur
+# Movies table
 c.execute("""
 CREATE TABLE IF NOT EXISTS movies (
     Series_Title TEXT,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS movies (
 )
 """)
 
-# Users tablosu
+# Users table
 c.execute("""
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS users (
 )
 """)
 
-# Reviews tablosu
+# Reviews table
 c.execute("""
 CREATE TABLE IF NOT EXISTS reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS reviews (
 )
 """)
 
-# CSV'den movie verilerini oku ve ekle
+# inserting movies to table from csv file
 inserted, skipped = 0, 0
 try:
     with open("../../data/movies.csv", newline='', encoding="utf-8") as csvfile:
@@ -79,12 +79,10 @@ try:
                 skipped += 1
                 continue
 except FileNotFoundError:
-    print("❌ CSV dosyası bulunamadı: data/movies.csv")
+    print("❌ CSV file couldn't find: data/movies.csv")
     conn.close()
     exit()
 
-# Kapat
 conn.commit()
 conn.close()
-print(f"✅ movies.db başarıyla oluşturuldu.")
-print(f"✔ {inserted} satır eklendi, ❌ {skipped} satır atlandı.")
+
