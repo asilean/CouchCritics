@@ -1,0 +1,2 @@
+# CouchCritics
+Movie rating platform.
