@@ -1,0 +1,56 @@
+<!-- index.html -->
+{% extends "layout.html" %}
+
+{% block title %}Movie List{% endblock %}
+
+{% block content %}
+<form class="d-flex mb-4" method="GET" action="{{ url_for('index') }}">
+    <input class="form-control me-2" type="search" name="q" placeholder="Search movies..."
+           value="{{ request.args.get('q', '') }}">
+    <button class="btn btn-outline-primary ms-2" type="submit">Search</button>
+</form>
+
+<h1 class="mb-4">🎬 Movie List</h1>
+<div class="row">
+    {% if movies|length == 0 %}
+    <p class="text-muted">No movies found.</p>
+    {% endif %}
+
+    {% for movie in movies %}
+    <div class="col-md-4 mb-4 d-flex">
+        <div class="card shadow-sm h-100 w-100 border-0 rounded-4">
+            <div class="card-body position-relative">
+                <h5 class="card-title">{{ movie.Series_Title }}</h5>
+                <p class="card-text"><strong>Year:</strong> {{ movie.Released_Year }}</p>
+                <p class="card-text">{{ movie.Overview[:100] }}...</p>
+                <a href="{{ url_for('movie_detail', title=movie.Series_Title) }}" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if total_pages > 1 %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4">
+            {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('index', page=page-1, q=query) }}">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for p in range(1, total_pages+1) %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('index', page=p, q=query) }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+
+            {% if page < total_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('index', page=page+1, q=query) }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+{% endblock %}

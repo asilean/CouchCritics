@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ movie.Series_Title }}{% endblock %}
+
+{% block content %}
+<a href="/" class="btn btn-secondary mb-4">← Back to list</a>
+<h2>{{ movie.Series_Title }} ({{ movie.Released_Year }})</h2>
+<p><strong>Certificate:</strong> {{ movie.Certificate }}</p>
+<p><strong>Runtime:</strong> {{ movie.Runtime }} min</p>
+<p><strong>Genre:</strong> {{ movie.Genre }}</p>
+<p><strong>IMDB Rating:</strong> {{ movie.IMDB_Rating }}</p>
+<p><strong>Meta Score:</strong> {{ movie.Meta_score }}</p>
+<p><strong>Director:</strong> {{ movie.Director }}</p>
+<p><strong>Stars:</strong> {{ movie.Star1 }}, {{ movie.Star2 }}, {{ movie.Star3 }}, {{ movie.Star4 }}</p>
+<p><strong>Votes:</strong> {{ movie.No_of_Votes }}</p>
+<p><strong>Gross:</strong> {{ movie.Gross }}</p>
+<p><strong>Overview:</strong> {{ movie.Overview }}</p>
+
+<hr>
+<button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#reviewsCollapse">
+  Show/Hide Reviews
+</button>
+<div class="collapse show border-top pt-3" id="reviewsCollapse">
+  {% if reviews and reviews|length > 0 %}
+    {% for r in reviews %}
+      {% if r.username and r.comment %}
+        <div class="mb-3 p-3 bg-white border rounded shadow-sm">
+          <strong>{{ r.username }}</strong> – {{ r.date }} – ⭐ {{ r.score }}/10
+          <p class="mb-0">{{ r.comment }}</p>
+        </div>
+      {% else %}
+        <div class="alert alert-warning">Review format invalid.</div>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <p>No reviews yet.</p>
+  {% endif %}
+</div>
+
+{% if user %}
+  {% set user_has_reviewed = reviews | selectattr('username', 'equalto', user) | list | length > 0 %}
+  {% if user_has_reviewed %}
+    <div class="alert alert-info mt-4">
+      You have already reviewed this movie.
+    </div>
+  {% else %}
+    <hr>
+    <h5 class="mt-4">Add a Review</h5>
+    <form method="POST" class="bg-white p-3 rounded shadow-sm">
+      <p class="text-muted">You are reviewing as <strong>{{ user }}</strong></p>
+      <div class="mb-3">
+        <label for="score" class="form-label">Score (1-10)</label>
+        <input type="number" class="form-control" id="score" name="score" min="1" max="10" required>
+      </div>
+      <div class="mb-3">
+        <label for="comment" class="form-label">Your Comment</label>
+        <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  {% endif %}
+{% else %}
+  <div class="alert alert-warning mt-4">
+    You must <a href="{{ url_for('login') }}">log in</a> to leave a review.
+  </div>
+{% endif %}
+{% endblock %}
