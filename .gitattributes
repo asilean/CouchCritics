@@ -1,0 +1,4 @@
+# Exclude HTML templates and static files from language statistics
+src/templates/* linguist-detectable=false
+src/static/* linguist-detectable=false
+
